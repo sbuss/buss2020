@@ -9,7 +9,8 @@ then.
 # Step 1 - Pick a committee name
 
 It can be anything that adequately describes what your committee is for.
-I picked "Steven Buss for Democratic County Central Committee 2020"
+I picked "Steven Buss for Democratic County Central Committee 2020". I believe
+it must contain the year of your election.
 
 # Step 2 - Declaration of Intent
 
