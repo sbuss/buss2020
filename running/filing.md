@@ -149,6 +149,11 @@ will make a copy and give you an unstamped envelope with which to mail your
 I recommend making another copy for your own records before you mail the
 original.
 
+## Step 4b - Form 112b
+
+E-signature card for online filing. Do this in person at ethics. Allows you
+to electronically file Form 460.
+
 # Step 5 - Wait for your FPPC ID number
 
 The Secretary of State will process your 410 very quickly. I mailed mine on
