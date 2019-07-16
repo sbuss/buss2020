@@ -254,3 +254,11 @@ You can do this [online](https://www.irs.gov/businesses/small-businesses-self-em
 # Step 8 - Create a Bank Account
 
 I haven't done this yet. Stand by for more updates as I learn them.
+
+# Step 9 - Raise money
+
+# Step 10 - Amend form 410 after raising $2,000
+
+Fill out a new form 410 with your FPPC ID, date qualified, and bank account
+info. You will need to bring this to SF Ethics and mail the original to the
+secretary of state.
