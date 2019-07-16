@@ -18,9 +18,13 @@ I picked "Steven Buss for Democratic County Central Committee 2020".
 
 # Step 2 - Declaration of Intent
 
-The first form to fill out is the Declaration of Intent to Solicit
-and Receive Contributions. This is not available online. You must go to the
-SF Department of Elections and fill it out in person.
+The SF Ethics Department says you need to fill out is the Declaration of Intent
+to Solicit and Receive Contributions, but it turns out this is wrong. The
+department of elections does not actually require you file this form for DCCC.
+You still can (and I did), so here's how:
+
+This is not available online. You must go to the SF Department of Elections and
+fill it out in person.
 
 You need your name, address, phone number, and chosen committee name. The
 staff at the Department of Elections will assist you in person.
@@ -145,6 +149,11 @@ will make a copy and give you an unstamped envelope with which to mail your
 I recommend making another copy for your own records before you mail the
 original.
 
+## Step 4b - Form 112b
+
+E-signature card for online filing. Do this in person at ethics. Allows you
+to electronically file Form 460.
+
 # Step 5 - Wait for your FPPC ID number
 
 The Secretary of State will process your 410 very quickly. I mailed mine on
@@ -206,6 +215,50 @@ Email support again requesting that they set your maximum contribution to $500.
 
 YOU CAN NOW RAISE MONEY! SHARE THAT LINK AND START MAKING CALLS!
 
-# Step 7 - Create a Bank Account
+# Step 7 - Get an EIN from the IRS
+
+To avoid linking your campaign bank account with your personal Social Security
+number, create an EIN for your committee by creating a [527 organization](https://en.wikipedia.org/wiki/527_organization).
+
+You can do this [online](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online):
+
+* Click "Apply Online Now"
+* Click "Being Application"
+* Select "View Additional Types, Including Tax-Exempt and Governmental Organizations"
+* Select "Political Organization"
+* Select "Banking purposes" when asked "Why is the Political Organization
+  requesting an EIN?" You only need this EIN for your bank account. Click continue.
+* Fill in your personal details and choose "I am a responsible and duly
+  authorized officer or a board member having knowledge of this organization's
+  affairs." Click continue.
+* When asked where the organization is located, input your home address, then
+  click Continue.
+* When asked "Tell us about the Political Organization":
+    * Input the name of your committee from your Form 501.
+    * The start date is the date you filed your Form 501.
+    * Closing month of accounting year can be any month. I chose July, the same
+      monthy that I started my committee.
+    * Under "Will you file Form 8871 under Sec 527?" click "Yes". This will
+      allow your organization to be tax-exempt.
+    * Click continue
+* If you expect to hire campaign staff, click "Yes" when asked if you will have
+  employees. If you expect just volunteers, click "No." Then click continue.
+* "How would you like to receive your EIN Confirmation Letter?" Pick whichever
+  you prefer. I chose "Receive letter online." Click continue.
+* You're now on the last page, so give everything a thorough proofread. No
+  typos!
+* Confirm and on the next page you'll have your EIN! Print and download this
+  for your records. You will need to bring it with you when you open a bank
+  account.
+
+# Step 8 - Create a Bank Account
 
 I haven't done this yet. Stand by for more updates as I learn them.
+
+# Step 9 - Raise money
+
+# Step 10 - Amend form 410 after raising $2,000
+
+Fill out a new form 410 with your FPPC ID, date qualified, and bank account
+info. You will need to bring this to SF Ethics and mail the original to the
+secretary of state.
