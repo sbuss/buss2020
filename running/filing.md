@@ -18,9 +18,13 @@ I picked "Steven Buss for Democratic County Central Committee 2020".
 
 # Step 2 - Declaration of Intent
 
-The first form to fill out is the Declaration of Intent to Solicit
-and Receive Contributions. This is not available online. You must go to the
-SF Department of Elections and fill it out in person.
+The SF Ethics Department says you need to fill out is the Declaration of Intent
+to Solicit and Receive Contributions, but it turns out this is wrong. The
+department of elections does not actually require you file this form for DCCC.
+You still can (and I did), so here's how:
+
+This is not available online. You must go to the SF Department of Elections and
+fill it out in person.
 
 You need your name, address, phone number, and chosen committee name. The
 staff at the Department of Elections will assist you in person.
