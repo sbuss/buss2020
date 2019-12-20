@@ -18,14 +18,41 @@ def login(driver):
 
 
 def create_all_individuals(driver, contributions):
+    """Create all individuals in ActBlue contributions.
+
+    WARNING: This will not correctly handle people with the same
+    {first,last}-name.
+    """
     with open(contributions, 'r') as f:
         reader = csv.DictReader(f)
         names = set()
         for row in reader:
-            name = row['Donor First Name'] + row['Donor Last Name']
+            name = row['Donor First Name'] + ' ' + row['Donor Last Name']
             if name in names:
+                print("Already seen %s; skipping" % name)
+                continue
+            if entity_exists(driver, name):
+                print("%s exists; skipping" % name)
+                names.add(name)
                 continue
             create_individual(driver, row)
+            print("Created %s" % name)
+            names.add(name)
+
+
+def entity_exists(driver, name):
+    driver.get("https://netfile.com/Filer/LegacyFree/Entity/SelectEntity?TT=MonetaryContribution")  # NOQA
+    elem = driver.find_element_by_id("EntityName")
+    elem.send_keys(name)
+    elem.send_keys(Keys.RETURN)
+
+    elem = driver.find_element_by_id("SearchResults")
+    if not elem:
+        return False
+    for ee in elem.find_elements_by_tag_name("td"):
+        if ee.text == name:
+            return True
+    return False
 
 
 def create_individual(driver, person):
