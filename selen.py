@@ -1,6 +1,9 @@
 import csv
+from datetime import datetime
+from decimal import Decimal
 import getpass
 import re
+import time
 
 from selenium.webdriver.common.keys import Keys
 
@@ -40,12 +43,15 @@ def create_all_individuals(driver, contributions):
             names.add(name)
 
 
-def entity_exists(driver, name):
+def get_entity_for_contribution(driver, name):
     driver.get("https://netfile.com/Filer/LegacyFree/Entity/SelectEntity?TT=MonetaryContribution")  # NOQA
     elem = driver.find_element_by_id("EntityName")
     elem.send_keys(name)
     elem.send_keys(Keys.RETURN)
 
+
+def entity_exists(driver, name):
+    get_entity_for_contribution(driver, name)
     elem = driver.find_element_by_id("SearchResults")
     if not elem:
         return False
@@ -106,4 +112,47 @@ def create_individual(driver, person):
                 elem.send_keys(m.groupdict()['exchange'])
                 elem = driver.find_element_by_id('WorkPhone_Number')
                 elem.send_keys(m.groupdict()['number'])
+    elem.send_keys(Keys.RETURN)
+
+
+def create_all_contributions(driver, contributions):
+    with open(contributions, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            create_contribution(driver, row)
+
+
+def create_contribution(driver, contribution):
+    """ONLY RUN THIS ONCE per line."""
+    name = "%s %s" % (
+        contribution['Donor First Name'], contribution['Donor Last Name'])
+    print(name)
+    get_entity_for_contribution(driver, name)
+    elem = driver.find_element_by_id("SearchResults")
+    if not elem:
+        print("Entity doesn't exist: %s" % name)
+        return
+    clicked = False
+    for ee in elem.find_elements_by_tag_name("td"):
+        if ee.text == name:
+            ee.parent.find_elements_by_tag_name(
+                'td')[0].find_element_by_tag_name('a').click()
+            clicked = True
+            break
+    if not clicked:
+        print("Couldn't find matching element for %s" % name)
+        return
+
+    time.sleep(1)  # Sleep 2 seconds so the page loads
+    contribution_date = datetime.strptime(
+        contribution['Date'], '%Y-%m-%d %H:%M:%S')
+    elem = driver.find_element_by_id('Date')
+    elem.send_keys(contribution_date.strftime("%m/%d/%Y"))
+
+    contribution_amount = Decimal(contribution['Amount'])
+    elem = driver.find_element_by_id('Amount')
+    elem.send_keys("{:.2f}".format(contribution_amount))
+
+    elem = driver.find_element_by_id('ElectionCycle-input')
+    elem.send_keys("Primary")
     elem.send_keys(Keys.RETURN)
