@@ -1,3 +1,4 @@
+import argparse
 import csv
 from datetime import datetime
 from decimal import Decimal
@@ -5,6 +6,7 @@ import getpass
 import re
 import time
 
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 
@@ -156,3 +158,21 @@ def create_contribution(driver, contribution):
     elem = driver.find_element_by_id('ElectionCycle-input')
     elem.send_keys("Primary")
     elem.send_keys(Keys.RETURN)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Import ActBlue contributions into Netfile")
+    parser.add_argument(
+        'contributions_file', help='Path to your contributions files')
+    parser.add_argument(
+        '--method', help='Import individuals or their donations?',
+        choices=['people', 'donations'])
+    args = parser.parse_args()
+
+    driver = webdriver.Chrome()
+    login(driver)
+    if args.method == 'people':
+        create_all_individuals(driver, args.contributions_file)
+    elif args.method == 'donations':
+        create_all_contributions(driver, args.contributions_file)
