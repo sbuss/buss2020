@@ -8,6 +8,7 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 
 def login(driver):
@@ -160,6 +161,81 @@ def create_contribution(driver, contribution):
     elem.send_keys(Keys.RETURN)
 
 
+def create_all_fees(driver, contributions):
+    """Create all fee disbursements in ActBlue contributions.
+
+    ONLY RUN THIS ONCE per line."""
+    actblue = 'ActBlue Techincal Services'
+    if not entity_exists(driver, actblue):
+        create_actblue_entity(driver, actblue)
+    get_entity_for_disbursements(driver, actblue)
+    elem = driver.find_element_by_id("SearchResults")
+    if not elem:
+        print("Entity doesn't exist: %s" % actblue)
+        return
+    clicked = False
+    for ee in elem.find_elements_by_tag_name("td"):
+        if ee.text == actblue:
+            ee.parent.find_elements_by_tag_name(
+                'td')[0].find_element_by_tag_name('a').click()
+            clicked = True
+            break
+    if not clicked:
+        print("Couldn't find matching element for %s" % actblue)
+        return
+
+    time.sleep(1)  # Sleep 1 second so the page loads
+
+    with open(contributions, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            time.sleep(1)  # Sleep 1 second so the page loads
+            fee_date = datetime.strptime(
+                row['Date'], '%Y-%m-%d %H:%M:%S')
+            elem = driver.find_element_by_id('Date')
+            elem.send_keys(fee_date.strftime("%m/%d/%Y"))
+
+            fee_amount = Decimal(row['Fee'])
+            elem = driver.find_element_by_id('Amount')
+            elem.send_keys("{:.2f}".format(fee_amount))
+
+            elem = Select(
+                driver.find_element_by_id('FppcSpendCodeDropDownField'))
+            elem.select_by_value("OFC")
+
+            elem = driver.find_element_by_id('DescriptionField')
+            elem.send_keys('Service Fee')
+
+            elem = driver.find_element_by_id('ElectionCycle-input')
+            elem.send_keys('Primary')
+
+            elem = driver.find_element_by_id('form-submit-button')
+            elem.click()
+
+
+def create_actblue_entity(driver, name):
+    driver.get("https://netfile.com/Filer/LegacyFree/Entity/OrganizationAdd?InProgressTransactionType=Disbursements")  # NOQA
+
+    actblue_to_netfile = [
+        ('Name_modal', name),
+        ('BusinessAddress_Line1', 'PO Box 441146'),
+        ('BusinessAddress_City', 'Somerville'),
+        ('BusinessAddress_State', 'MA'),
+        ('BusinessAddress_ZipCode', '02144'),
+    ]
+    for (elem_name, val) in actblue_to_netfile:
+        elem = driver.find_element_by_id(elem_name)
+        elem.send_keys(val)
+    elem.send_keys(Keys.RETURN)
+
+
+def get_entity_for_disbursements(driver, name):
+    driver.get("https://netfile.com/Filer/LegacyFree/Entity/SelectEntity?TT=Disbursements")  # NOQA
+    elem = driver.find_element_by_id("EntityName")
+    elem.send_keys(name)
+    elem.send_keys(Keys.RETURN)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Import ActBlue contributions into Netfile")
@@ -167,7 +243,11 @@ if __name__ == "__main__":
         'contributions_file', help='Path to your contributions files')
     parser.add_argument(
         '--method', help='Import individuals or their donations?',
-        choices=['people', 'donations'])
+        choices=[
+            'people',  # Donors
+            'donations',  # Individual donations
+            'fees',  # Fees for donations (counts as disbursement)
+        ])
     args = parser.parse_args()
 
     driver = webdriver.Chrome()
@@ -176,3 +256,5 @@ if __name__ == "__main__":
         create_all_individuals(driver, args.contributions_file)
     elif args.method == 'donations':
         create_all_contributions(driver, args.contributions_file)
+    elif args.method == 'fees':
+        create_all_fees(driver, args.contributions_file)
