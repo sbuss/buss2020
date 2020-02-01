@@ -7,6 +7,7 @@ import re
 import time
 
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 
@@ -234,6 +235,50 @@ def get_entity_for_disbursements(driver, name):
     elem = driver.find_element_by_id("EntityName")
     elem.send_keys(name)
     elem.send_keys(Keys.RETURN)
+
+
+def _add_intermediaries(driver):
+    driver.get("https://netfile.com/Filer/LegacyFree/Transaction")
+    time.sleep(0.5)
+    all_hrefs = []
+    while True:
+        time.sleep(0.5)
+        elems = driver.find_elements_by_tag_name("tr")
+        print("Found %d elems" % len(elems))
+        for ee in elems:
+            eet = ee.text
+            if 'Monetary Contribution' in eet:
+                href = ee.find_element_by_link_text('Edit').get_attribute('href')
+                print('adding %s' % href)
+                all_hrefs.append(href)
+        elem = driver.find_element_by_link_text('next')
+        if 't-state-disabled' in elem.get_attribute('class'):
+            break
+        else:
+            elem.click()
+    print("Found %d links" % len(all_hrefs))
+    for c, href in enumerate(all_hrefs):
+        print("Link #%d: %s" % (c, href))
+        driver.get(href)
+        time.sleep(0.5)
+        try:
+            elem = driver.find_element_by_link_text('Enter an Intermediary')
+        except NoSuchElementException:
+            continue
+        elem.click()
+        time.sleep(0.5)
+        elem = driver.find_element_by_id('EntityName')
+        elem.send_keys('ActBlue')
+        elem.send_keys(Keys.RETURN)
+        time.sleep(0.5)
+        links = driver.find_elements_by_link_text('Select')
+        if len(links) > 1:
+            print("Too many links for href %s" % href)
+            continue
+        links[0].click()
+        time.sleep(0.5)
+        driver.find_element_by_name('btnSubmit').click()
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":
