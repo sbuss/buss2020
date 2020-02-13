@@ -159,6 +159,26 @@ def create_contribution(driver, contribution):
 
     elem = driver.find_element_by_id('ElectionCycle-input')
     elem.send_keys("Primary")
+
+    try:
+        elem = driver.find_element_by_link_text('Select an Intermediary')
+    except NoSuchElementException:
+        print("#### Couldn't enter intermediary for %s" % name)
+    else:
+        elem.click()
+        time.sleep(1)
+        elem = driver.find_element_by_id('EntityName')
+        elem.send_keys('ActBlue')
+        elem.send_keys(Keys.RETURN)
+        time.sleep(1)
+        links = driver.find_elements_by_link_text('Select')
+        if len(links) > 1:
+            print("Too many links for %s" % name)
+        links[0].click()
+        time.sleep(0.5)
+        driver.find_element_by_name('btnSubmit').click()
+        time.sleep(1)
+    elem = driver.find_element_by_id('ElectionCycle-input')
     elem.send_keys(Keys.RETURN)
 
 
